@@ -1,0 +1,13 @@
+C:\github\slutProject\slutProject\bin\Debug\netcoreapp3.1\slutProject.exe
+C:\github\slutProject\slutProject\bin\Debug\netcoreapp3.1\slutProject.deps.json
+C:\github\slutProject\slutProject\bin\Debug\netcoreapp3.1\slutProject.runtimeconfig.json
+C:\github\slutProject\slutProject\bin\Debug\netcoreapp3.1\slutProject.runtimeconfig.dev.json
+C:\github\slutProject\slutProject\bin\Debug\netcoreapp3.1\slutProject.dll
+C:\github\slutProject\slutProject\bin\Debug\netcoreapp3.1\slutProject.pdb
+C:\github\slutProject\slutProject\obj\Debug\netcoreapp3.1\slutProject.csprojAssemblyReference.cache
+C:\github\slutProject\slutProject\obj\Debug\netcoreapp3.1\slutProject.AssemblyInfoInputs.cache
+C:\github\slutProject\slutProject\obj\Debug\netcoreapp3.1\slutProject.AssemblyInfo.cs
+C:\github\slutProject\slutProject\obj\Debug\netcoreapp3.1\slutProject.csproj.CoreCompileInputs.cache
+C:\github\slutProject\slutProject\obj\Debug\netcoreapp3.1\slutProject.dll
+C:\github\slutProject\slutProject\obj\Debug\netcoreapp3.1\slutProject.pdb
+C:\github\slutProject\slutProject\obj\Debug\netcoreapp3.1\slutProject.genruntimeconfig.cache
