@@ -59,9 +59,9 @@ namespace sänkaSkepp
                 Console.Clear();
                 RitaSpelplanen();
                 Console.WriteLine("Var vill du skjuta? (X)");
-                int x = ReadInt();
+                int x = ReadInt(6);
                 Console.WriteLine("Var vill du skjuta? (Y)");
-                int y = ReadInt();
+                int y = ReadInt(4);
                 spelarensSkott[x - 1, y - 1] = true;
                 datornsSkott[slump.Next(kartBredd), slump.Next(kartHöjd)] = true;
 
@@ -177,12 +177,12 @@ namespace sänkaSkepp
         /// Läser in ett heltal från användaren
         /// </summary>
         /// <returns>Användarens heltal</returns>
-        static int ReadInt()
+        static int ReadInt(int maxInt)
         {
             int heltal;
-            while (int.TryParse(Console.ReadLine(), out heltal) == false)
+            while (!int.TryParse(Console.ReadLine(), out heltal) || heltal < 1 || heltal > maxInt)
             {
-                Console.WriteLine("Du skrev inte in ett heltal. Försök igen.");
+                Console.WriteLine("Du skrev inte in ett heltal eller så var talet inte giltigt. Försök igen.");
             }
             return heltal;
         }
