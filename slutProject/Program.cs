@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace sänkaSkepp
 {
@@ -13,11 +14,69 @@ namespace sänkaSkepp
 
         static Random slump = new Random();
 
+        static string[] spelInformation = new string[4];
+
+        static string filnamn = "centralbord.csv";
+
+
+
         static void Main(string[] args)
         {
-            SkapaKartorna();
-            PlaceraSkepp();
-            SpelaSänkaSkepp();
+
+
+            if (File.Exists(filnamn))
+            {
+                // Läs in alla rader, dvs bordsbokningar
+                spelInformation = File.ReadAllLines(filnamn);
+                Console.WriteLine("spelinformation lästes in från fil");
+            }
+            else
+            {
+                // Skapa en tom bordslista i arrayen
+                // Lagra detta i filen
+                // 0. förra vinnare, 1. antalet skepp, 2. x-led, 3.y-led
+                spelInformation[0] = "Ingen vinnare än";
+                spelInformation[1] = "0";
+                spelInformation[2] = "0";
+                spelInformation[3] = "0";
+
+
+                // Lagra i filen
+                File.WriteAllLines(filnamn, spelInformation);
+                Console.WriteLine("Fil med spelinformation saknas, ny fil skapades");
+            }
+            int menyVal = 0;
+            while (menyVal != 4)
+            {
+                Console.WriteLine("1. Spela sänka skepp");
+                Console.WriteLine("2. Se senaste vinnare");
+                Console.WriteLine("3. inställningar");
+                Console.WriteLine("4. Avsluta");
+                menyVal = ReadInt(4);
+
+                switch (menyVal)
+                {
+                    case 1:
+                        SkapaKartorna();
+                        PlaceraSkepp();
+                        SpelaSänkaSkepp();
+                        break;
+                    case 2:
+                        Console.WriteLine($"Senaste Vinnare Var {spelInformation[0]} ");
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+                        Console.WriteLine("Hejdå");
+                        break;
+
+                    default:
+
+                        break;
+                }
+            }
+
         }
 
         /// <summary>
@@ -70,6 +129,8 @@ namespace sänkaSkepp
                     Console.Clear();
                     RitaSpelplanen();
                     Console.WriteLine("Spelaren vann");
+                    spelInformation[0] = "Spelaren";
+                    File.WriteAllLines(filnamn, spelInformation);
                     Console.ReadKey();
                     harNågonVunnit = true;
                 }
@@ -78,11 +139,15 @@ namespace sänkaSkepp
                     Console.Clear();
                     RitaSpelplanen();
                     Console.WriteLine("Datorn vann");
+                    spelInformation[0] = "Datorn";
+                    File.WriteAllLines(filnamn, spelInformation);
                     Console.ReadKey();
                     harNågonVunnit = true;
+
                 }
             }
         }
+
 
         /// <summary>
         /// Ritar ut spelarens och datorns kartor
