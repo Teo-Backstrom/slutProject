@@ -5,12 +5,13 @@ namespace sänkaSkepp
 {
     class Program
     {
-        static int kartBredd = 6;
-        static int kartHöjd = 4;
-        static string[,] spelarensKarta = new string[kartBredd, kartHöjd];
-        static string[,] datornsKarta = new string[kartBredd, kartHöjd];
-        static bool[,] spelarensSkott = new bool[kartBredd, kartHöjd];
-        static bool[,] datornsSkott = new bool[kartBredd, kartHöjd];
+
+        static int kartBredd;// = 6;
+        static int kartHöjd;// = 4;
+        static string[,] spelarensKarta;// = new string[kartBredd, kartHöjd];
+        static string[,] datornsKarta;// = new string[kartBredd, kartHöjd];
+        static bool[,] spelarensSkott;// = new bool[kartBredd, kartHöjd];
+        static bool[,] datornsSkott;// = new bool[kartBredd, kartHöjd];
 
         static Random slump = new Random();
 
@@ -22,7 +23,6 @@ namespace sänkaSkepp
 
         static void Main(string[] args)
         {
-
 
             if (File.Exists(filnamn))
             {
@@ -45,9 +45,16 @@ namespace sänkaSkepp
                 File.WriteAllLines(filnamn, spelInformation);
                 Console.WriteLine("Fil med spelinformation saknas, ny fil skapades");
             }
+
             int menyVal = 0;
             while (menyVal != 4)
             {
+                datornsKarta = new string[kartBredd, kartHöjd];
+                spelarensKarta = new string[kartBredd, kartHöjd];
+                datornsSkott = new bool[kartBredd, kartHöjd];
+                spelarensSkott = new bool[kartBredd, kartHöjd];
+                kartBredd = int.Parse(spelInformation[2]);
+                kartHöjd = int.Parse(spelInformation[3]);
                 Console.WriteLine("1. Spela sänka skepp");
                 Console.WriteLine("2. Se senaste vinnare");
                 Console.WriteLine("3. inställningar");
@@ -65,7 +72,7 @@ namespace sänkaSkepp
                         Console.WriteLine($"Senaste Vinnare Var {spelInformation[0]} ");
                         break;
                     case 3:
-
+                        Spelinställning();
                         break;
                     case 4:
                         Console.WriteLine("Hejdå");
@@ -76,6 +83,28 @@ namespace sänkaSkepp
                         break;
                 }
             }
+
+        }
+
+
+        static void Spelinställning()
+        {
+            int antal = int.Parse(spelInformation[1]);
+            int bredd = int.Parse(spelInformation[2]);
+            int höjd = int.Parse(spelInformation[3]);
+            Console.WriteLine("hur många båtar vill du ha med");
+            antal = ReadInt(10);
+
+            Console.WriteLine("hur bred ska planen vara");
+            bredd = ReadInt(10);
+
+            Console.WriteLine("hur hög ska planen vara");
+            höjd = ReadInt(10);
+
+            spelInformation[1] = antal.ToString();
+            spelInformation[2] = bredd.ToString();
+            spelInformation[3] = höjd.ToString();
+            File.WriteAllLines(filnamn, spelInformation);
 
         }
 
@@ -118,9 +147,9 @@ namespace sänkaSkepp
                 Console.Clear();
                 RitaSpelplanen();
                 Console.WriteLine("Var vill du skjuta? (X)");
-                int x = ReadInt(6);
+                int x = ReadInt(kartBredd);
                 Console.WriteLine("Var vill du skjuta? (Y)");
-                int y = ReadInt(4);
+                int y = ReadInt(kartHöjd);
                 spelarensSkott[x - 1, y - 1] = true;
                 datornsSkott[slump.Next(kartBredd), slump.Next(kartHöjd)] = true;
 
