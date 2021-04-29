@@ -86,7 +86,9 @@ namespace sänkaSkepp
 
         }
 
-
+        /// <summary>
+        /// Låter användare mata in spelplan bred och höjd och antalet båtar
+        /// </summary>
         static void Spelinställning()
         {
             int antal = int.Parse(spelInformation[1]);
