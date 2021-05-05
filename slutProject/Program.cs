@@ -5,13 +5,13 @@ namespace sänkaSkepp
 {
     class Program
     {
-
-        static int kartBredd;// = 6;
-        static int kartHöjd;// = 4;
-        static string[,] spelarensKarta;// = new string[kartBredd, kartHöjd];
-        static string[,] datornsKarta;// = new string[kartBredd, kartHöjd];
-        static bool[,] spelarensSkott;// = new bool[kartBredd, kartHöjd];
-        static bool[,] datornsSkott;// = new bool[kartBredd, kartHöjd];
+        //Problemet var att det var en statick kartbredd och static karthöjd som gjorde så jag inte kunde ha ett större tal
+        static int kartBredd = 80;
+        static int kartHöjd = 80;
+        static string[,] spelarensKarta = new string[kartBredd, kartHöjd];
+        static string[,] datornsKarta = new string[kartBredd, kartHöjd];
+        static bool[,] spelarensSkott = new bool[kartBredd, kartHöjd];
+        static bool[,] datornsSkott = new bool[kartBredd, kartHöjd];
 
         static Random slump = new Random();
 
@@ -37,8 +37,8 @@ namespace sänkaSkepp
                 // 0. förra vinnare, 1. antalet skepp, 2. x-led, 3.y-led
                 spelInformation[0] = "Ingen vinnare än";
                 spelInformation[1] = "0";
-                spelInformation[2] = "0";
-                spelInformation[3] = "0";
+                spelInformation[2] = "6";
+                spelInformation[3] = "4";
 
 
                 // Lagra i filen
@@ -49,12 +49,12 @@ namespace sänkaSkepp
             int menyVal = 0;
             while (menyVal != 4)
             {
-                datornsKarta = new string[kartBredd, kartHöjd];
+                /*datornsKarta = new string[kartBredd, kartHöjd];
                 spelarensKarta = new string[kartBredd, kartHöjd];
                 datornsSkott = new bool[kartBredd, kartHöjd];
-                spelarensSkott = new bool[kartBredd, kartHöjd];
-                kartBredd = int.Parse(spelInformation[2]);
-                kartHöjd = int.Parse(spelInformation[3]);
+                spelarensSkott = new bool[kartBredd, kartHöjd];*/
+                //kartBredd = int.Parse(spelInformation[2]);
+                //kartHöjd = int.Parse(spelInformation[3]);
                 Console.WriteLine("1. Spela sänka skepp");
                 Console.WriteLine("2. Se senaste vinnare");
                 Console.WriteLine("3. inställningar");
@@ -69,7 +69,7 @@ namespace sänkaSkepp
                         SpelaSänkaSkepp();
                         break;
                     case 2:
-                        Console.WriteLine($"Senaste Vinnare Var {spelInformation[0]} ");
+                        Console.WriteLine($"Senaste Vinnare Var {spelInformation[0]}");
                         break;
                     case 3:
                         Spelinställning();
@@ -115,6 +115,8 @@ namespace sänkaSkepp
         /// </summary>
         static void SkapaKartorna()
         {
+            kartHöjd = int.Parse(spelInformation[3]);
+            kartBredd = int.Parse(spelInformation[2]);
             for (int y = 0; y < kartHöjd; y++)
             {
                 for (int x = 0; x < kartBredd; x++)
