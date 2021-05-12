@@ -1,29 +1,35 @@
-﻿using System;
+﻿
+using System;
 using System.IO;
 
 namespace sänkaSkepp
 {
+
     class Program
     {
-        //Problemet var att det var en statick kartbredd och static karthöjd som gjorde så jag inte kunde ha ett större tal
         static int kartBredd = 100;
         static int kartHöjd = 100;
+
+        //skapar kartor
         static string[,] spelarensKarta = new string[kartBredd, kartHöjd];
         static string[,] datornsKarta = new string[kartBredd, kartHöjd];
         static bool[,] spelarensSkott = new bool[kartBredd, kartHöjd];
         static bool[,] datornsSkott = new bool[kartBredd, kartHöjd];
 
+        //slumpmaskin
         static Random slump = new Random();
 
+        //skapar array för fillagring
         static string[] spelInformation = new string[4];
 
+        //namn på fil för att används i flera funktioner
         static string filnamn = "centralbord.csv";
 
 
 
         static void Main(string[] args)
         {
-
+            //kollar om filen finns annars skapas en fil med standrad inställningar
             if (File.Exists(filnamn))
             {
                 // Läs in alla rader, dvs bordsbokningar
@@ -49,29 +55,28 @@ namespace sänkaSkepp
             int menyVal = 0;
             while (menyVal != 4)
             {
-                /*datornsKarta = new string[kartBredd, kartHöjd];
-                spelarensKarta = new string[kartBredd, kartHöjd];
-                datornsSkott = new bool[kartBredd, kartHöjd];
-                spelarensSkott = new bool[kartBredd, kartHöjd];*/
-                //kartBredd = int.Parse(spelInformation[2]);
-                //kartHöjd = int.Parse(spelInformation[3]);
+                //menyval
                 Console.WriteLine("1. Spela sänka skepp");
                 Console.WriteLine("2. Se senaste vinnare");
                 Console.WriteLine("3. inställningar");
                 Console.WriteLine("4. Avsluta");
+                //ingen ogiltig inamtning max 4 min 1
                 menyVal = ReadInt(4, 1);
 
                 switch (menyVal)
                 {
                     case 1:
+                        //kör metoder för att spela spelet
                         SkapaKartorna();
                         PlaceraSkepp();
                         SpelaSänkaSkepp();
                         break;
                     case 2:
+                        //visar sanaste vinnare
                         Console.WriteLine($"Senaste Vinnare Var {spelInformation[0]}");
                         break;
                     case 3:
+                        //låtar användare välja spelinställningar
                         Spelinställning();
                         break;
                     case 4:
@@ -91,9 +96,12 @@ namespace sänkaSkepp
         /// </summary>
         static void Spelinställning()
         {
+            //felar upp array till int
             int antal = int.Parse(spelInformation[1]);
             int bredd = int.Parse(spelInformation[2]);
             int höjd = int.Parse(spelInformation[3]);
+
+            //låtar användare mata in ny information
             Console.WriteLine("hur många båtar vill du ha med (Välj ett tal mellan 2-10)");
             antal = ReadInt(10, 2);
 
@@ -103,6 +111,7 @@ namespace sänkaSkepp
             Console.WriteLine("hur hög ska planen vara (Välj ett tal mellan 4-100)");
             höjd = ReadInt(100, 4);
 
+            //sparar information i array och sedan i fil
             spelInformation[1] = antal.ToString();
             spelInformation[2] = bredd.ToString();
             spelInformation[3] = höjd.ToString();
@@ -115,6 +124,7 @@ namespace sänkaSkepp
         /// </summary>
         static void SkapaKartorna()
         {
+            //skapar kartor med den angedda värderna
             kartHöjd = int.Parse(spelInformation[3]);
             kartBredd = int.Parse(spelInformation[2]);
 
@@ -122,6 +132,7 @@ namespace sänkaSkepp
             {
                 for (int x = 0; x < kartBredd; x++)
                 {
+                    //gör bas kartan med bara 0 or och anger träffar till false
                     spelarensKarta[x, y] = "O";
                     datornsKarta[x, y] = "O";
                     spelarensSkott[x, y] = false;
@@ -135,19 +146,23 @@ namespace sänkaSkepp
         /// </summary>
         static void PlaceraSkepp()
         {
+
             int antal = int.Parse(spelInformation[1]);
+            //loopar igenom tills det inte finns fler skepp kvar
             for (int i = 0; i < antal; i++)
             {
                 bool flagga = false;
                 while (flagga == false)
                 {
-                    Console.WriteLine($"Vart vill du ställa ut ditt skepp{antal}");
+                    //låter användare ange x och y pos för skepp
+                    Console.WriteLine($"Vart vill du ställa ut ditt skepp nr{i + 1}");
                     Console.WriteLine($"X-kordinat välj mellan 1-{kartBredd}");
                     Console.WriteLine("PS. kom ihåg att kordinaterana utgår från 4je kvadranten");
                     int x = ReadInt(kartBredd, 1);
                     Console.WriteLine($"Y-kordinat välj mellan 1-{kartHöjd}");
                     Console.WriteLine("PS. kom ihåg att kordinaterana utgår från 4je kvadranten");
                     int y = ReadInt(kartHöjd, 1);
+                    //kolla om stället är ledigt
                     if (spelarensKarta[x, y] == "O")
                     {
                         spelarensKarta[x, y] = "X";
@@ -160,16 +175,19 @@ namespace sänkaSkepp
                 }
 
             }
+            //loopar igenom tills det inte finns fler skepp kvar
             for (int i = 0; i < antal; i++)
             {
                 bool flagga = false;
                 while (flagga == false)
                 {
+                    //slupar pos för datorns skepp
                     int x = slump.Next(kartBredd);
                     int y = slump.Next(kartHöjd);
-                    if (spelarensKarta[x, y] == "O")
+                    //kollar om pos är ledig för skeppet annars så slumpas en ny pos fram
+                    if (datornsKarta[x, y] == "O")
                     {
-                        spelarensKarta[x, y] = "X";
+                        datornsKarta[x, y] = "X";
                         flagga = true;
                     }
                 }
@@ -182,9 +200,11 @@ namespace sänkaSkepp
         /// </summary>
         static void SpelaSänkaSkepp()
         {
+            //till någon vunnit körs denna kod
             bool harNågonVunnit = false;
             while (harNågonVunnit == false)
             {
+                //tar bort gammla spelplan ritar ny spelplan och låtar användare skjuta valfri plats + datorn random plats
                 Console.Clear();
                 RitaSpelplanen();
                 Console.WriteLine("Var vill du skjuta? (X)");
@@ -194,6 +214,7 @@ namespace sänkaSkepp
                 spelarensSkott[x - 1, y - 1] = true;
                 datornsSkott[slump.Next(kartBredd), slump.Next(kartHöjd)] = true;
 
+                //om spelare vunnit så informeras det och det lagras i fil och slutar matchen efter valfri knapp tryckt
                 if (HarSpelarenVunnit())
                 {
                     Console.Clear();
@@ -204,6 +225,7 @@ namespace sänkaSkepp
                     Console.ReadKey();
                     harNågonVunnit = true;
                 }
+                //om datorn vunnit så informeras det och det lagras i fil och slutar matchen efter valfri knapp tryckt
                 else if (HarDatornVunnit())
                 {
                     Console.Clear();
@@ -222,6 +244,7 @@ namespace sänkaSkepp
         /// <summary>
         /// Ritar ut spelarens och datorns kartor
         /// </summary>
+
         static void RitaSpelplanen()
         {
             Console.WriteLine("Spelarens karta");
@@ -274,6 +297,7 @@ namespace sänkaSkepp
         /// <returns></returns>
         static bool HarSpelarenVunnit()
         {
+
             for (int y = 0; y < kartHöjd; y++)
             {
                 for (int x = 0; x < kartBredd; x++)
@@ -309,12 +333,13 @@ namespace sänkaSkepp
         }
 
         /// <summary>
-        /// Läser in ett heltal från användaren
+        /// Läser in inmatning från användaren
         /// </summary>
-        /// <returns>Användarens heltal</returns>
+        /// <returns>heltal</returns>
         static int ReadInt(int maxInt, int minInt)
         {
             int heltal;
+            //kollar så talet är en int och är mellan min och max kravet
             while (!int.TryParse(Console.ReadLine(), out heltal) || heltal < minInt || heltal > maxInt)
             {
                 Console.WriteLine("Du skrev inte in ett heltal eller så var talet inte giltigt. Försök igen.");
