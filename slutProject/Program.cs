@@ -68,7 +68,7 @@ namespace sänkaSkepp
                     case 1:
                         //kör metoder för att spela spelet
                         SkapaKartorna();
-                        PlaceraSkepp();
+                        PlaceraDubbelSkepp();
                         SpelaSänkaSkepp();
                         break;
                     case 2:
@@ -165,7 +165,7 @@ namespace sänkaSkepp
                     //kolla om stället är ledigt
                     if (spelarensKarta[x, y] == "O")
                     {
-                        spelarensKarta[x, y] = "X";
+                        spelarensKarta[x - 1, y - 1] = "X";
                         flagga = true;
                     }
                     else
@@ -188,6 +188,56 @@ namespace sänkaSkepp
                     if (datornsKarta[x, y] == "O")
                     {
                         datornsKarta[x, y] = "X";
+                        flagga = true;
+                    }
+                }
+
+            }
+        }
+
+        static void PlaceraDubbelSkepp()
+        {
+
+            for (int i = 0; i < 2; i++)
+            {
+                bool flagga = false;
+                while (flagga == false)
+                {
+                    //låter användare ange x och y pos för skepp
+                    Console.WriteLine($"Vart vill du ställa ut ditt horizontella dubbelskepp nr{i + 1} utifrån dens vänstra position");
+                    Console.WriteLine($"X-kordinat välj mellan 1-{kartBredd}");
+                    Console.WriteLine("PS. kom ihåg att kordinaterana utgår från 4je kvadranten");
+                    int x = ReadInt(kartBredd - 1, 1);
+                    Console.WriteLine($"Y-kordinat välj mellan 1-{kartHöjd}");
+                    Console.WriteLine("PS. kom ihåg att kordinaterana utgår från 4je kvadranten");
+                    int y = ReadInt(kartHöjd, 1);
+                    //kolla om stället är ledigt
+                    if (spelarensKarta[x, y] == "O" && spelarensKarta[x + 1, y] == "O")
+                    {
+                        spelarensKarta[x - 1, y - 1] = "X";
+                        spelarensKarta[x, y - 1] = "X";
+                        flagga = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Finns redan ett skepp på samma ställe, försök igen");
+                    }
+                }
+
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                bool flagga = false;
+                while (flagga == false)
+                {
+                    //slupar pos för datorns skepp
+                    int x = slump.Next(kartBredd);
+                    int y = slump.Next(kartHöjd);
+                    //kollar om pos är ledig för skeppet annars så slumpas en ny pos fram
+                    if (datornsKarta[x, y] == "O" && datornsKarta[x + 1, y] == "O")
+                    {
+                        datornsKarta[x, y] = "X";
+                        datornsKarta[x + 1, y] = "X";
                         flagga = true;
                     }
                 }
